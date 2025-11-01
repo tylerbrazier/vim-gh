@@ -2,7 +2,6 @@
 "
 " TODO
 " - make it work for https remote urls
-" - allow remotes other than origin
 " - allow branches/commits other than HEAD
 " - will the `open` command work everywhere?
 
@@ -11,15 +10,15 @@ if exists("g:loaded_gh") || &cp
 endif
 let g:loaded_gh = 1
 
-silent! nnoremap <unique> gh :.GH %
+silent! nnoremap <unique> gh :.GH origin %
 
-command -count -nargs=1 -complete=file GH call GH(<q-args>, <count>)
+command -count -nargs=* -complete=file GH call GH(<f-args>, <count>)
 
-function GH(file, line) abort
+function GH(remote, file, line) abort
 	let wd = fnamemodify(a:file, ':p:h')
 	let fname = fnamemodify(a:file, ':t')
 	let path = s:git('ls-files --full-name -- '..shellescape(fname), wd)
-	let remote_url = s:git('remote get-url origin', wd)
+	let remote_url = s:git('remote get-url '..a:remote, wd)
 	" git@github.com:tylerbrazier/vim-gh.git
 	let repo = substitute(remote_url, '^.*:\(.\{-}\)\(\.git\)\?$', '\1', '')
 	let commit = s:git('rev-parse HEAD', wd)
