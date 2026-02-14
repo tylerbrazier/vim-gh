@@ -29,10 +29,10 @@ function s:gh(remote=0, ref=0, file=0, line=0) abort
 
 	if !empty(a:ref)
 		let gh_url = join([
-					\gh_url,
-					\empty(a:file) ? 'tree' : 'blob',
-					\s:resolve(a:ref, wd)
-					\], '/')
+				\gh_url,
+				\empty(a:file) ? 'tree' : 'blob',
+				\s:resolve(a:ref, wd)
+				\], '/')
 	endif
 
 	if !empty(a:file)
@@ -61,9 +61,11 @@ function s:git(args, wd)
 endfunction
 
 function s:resolve(ref, wd)
-	" resolve symbolic refs (all caps) like HEAD to commits
-	" but leave anything else as is
-	return match(a:ref, '^[A-Z_]\+$') > -1
-				\? s:git('rev-parse '..a:ref, a:wd)
-				\: a:ref
+	return s:git('rev-parse '..a:ref, a:wd)
+
+	" to resolve just symbolic refs (all caps) like HEAD to commits
+	" but leave anything else as is:
+	"return match(a:ref, '^[A-Z_]\+$') > -1
+	"			\? s:git('rev-parse '..a:ref, a:wd)
+	"			\: a:ref
 endfunction
