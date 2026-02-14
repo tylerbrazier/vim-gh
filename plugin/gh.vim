@@ -30,7 +30,7 @@ function s:gh(remote=0, ref=0, file=0, line=0) abort
 	if !empty(a:ref)
 		let gh_url = join([
 				\gh_url,
-				\empty(a:file) ? 'tree' : 'blob',
+				\empty(a:file) ? 'commit' : 'blob',
 				\s:resolve(a:ref, wd)
 				\], '/')
 	endif
