@@ -4,12 +4,6 @@ local function git(args)
 	return vim.trim(result.stdout)
 end
 
-local function master()
-	local result = git('rev-parse --abbrev-ref origin/HEAD')
-	-- e.g. origin/master (need to trim the origin/ part)
-	return result:match('origin/(.+)')
-end
-
 local function repo()
 	local remote_url = git('remote get-url origin')
 	-- e.g. git@github.com:tylerbrazier/vim-gh(.git)
@@ -17,11 +11,9 @@ local function repo()
 end
 
 local function pr_description()
-	local m, n, f
-	m = master()
-	n = tonumber(git('rev-list --count --no-merges '..m..'..'))
-	f = n == 1 and '%b' or '-%x20%s%n%b'
-	return git('log --reverse --no-merges '..m..'.. --format='..f)
+	local n = tonumber(git('rev-list --count --no-merges origin/HEAD..'))
+	local f = n == 1 and '%b' or '-%x20%s%n%b'
+	return git('log --reverse --no-merges origin/HEAD.. --format='..f)
 end
 
 local function url_encode(str)
