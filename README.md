@@ -8,10 +8,15 @@ Usage:
 
 Most commonly I use this to open the current file on the current line:
 
-    :GH origin HEAD % .`
+    :GH origin HEAD % .
 
-To open a pull request from Neovim after pushing a branch:
+To open a pull request after pushing a branch:
 
     :PR [title of pull request]
 
 this also populates the description using the commit messages on the branch.
+
+**TODO**
+
+- make it work for https remote urls
+- make `:PR` work for remotes other than `origin`
